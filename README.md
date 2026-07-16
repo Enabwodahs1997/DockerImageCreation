@@ -141,3 +141,46 @@ docker run --rm genx:latest -type exp -duration 6h -step 30m
 
 - Container exits immediately:
   This is expected if you run without `-web`; default command prints help and exits. Use `-web` for a long-running web server.
+
+## Docker Compose Stack
+
+<!-- GitHub repo URL: https://github.com/Enabwodahs1997/DockerImageCreation -->
+
+This compose stack uses version 3.8 and defines two services:
+
+- First Service: `web` primary GenX web service on port 8080
+- Second Service: `preview` secondary GenX web service on port 8081
+
+Use `web` as the first service when scaling the stack.
+
+Deploy the stack:
+
+```bash
+docker compose -f docker-compose.yaml up -d --build
+```
+
+Scale out the first service to 7 replicas:
+
+```bash
+docker compose -f docker-compose.yaml up -d --scale web=7
+```
+
+Scale in the first service again:
+
+```bash
+docker compose -f docker-compose.yaml up -d --scale web=2
+```
+
+Stop one container and start it again:
+
+```bash
+docker ps
+docker stop <container-id>
+docker start <container-id>
+```
+
+Remove the stack and delete the containers:
+
+```bash
+docker compose -f docker-compose.yaml down --remove-orphans
+```
